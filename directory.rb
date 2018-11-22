@@ -31,7 +31,7 @@ end
 
 def print(students)
   students.each.with_index(1) do |student, x|
-    if student[:name][0] == "h"
+    if student[:name].length < 12
       center_puts("#{x} #{student[:name]} (#{student[:cohort]} cohort)")
     end
   end
