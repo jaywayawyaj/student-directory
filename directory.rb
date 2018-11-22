@@ -10,8 +10,8 @@ def input_students
   # while the name is not empty, repeat this code
   while !name.empty? do
     # add the student and cohort hash to the array
-    students << {name: name, cohort: cohort.capitalize.to_sym}
-    puts "Now we have #{students.count} students"
+    @students << {name: name, cohort: cohort.capitalize.to_sym}
+    puts "Now we have #{@students.count} students"
     # get another name from the user
     name = gets.chomp
     # if a name is entered find out their cohort
@@ -21,7 +21,19 @@ def input_students
     end
   end
   # return the array of students and cohorts
-  students
+  @students
+end
+
+def save_students
+  # open the file for writing
+  file = File.open("students.csv", "w")
+  # iterate over the array of students
+  @students.each do |student|
+    student_data = [student[:name], student[:cohort]]
+    csv_line = student_data.join(",")
+    file.puts csv_line
+  end
+  file.close
 end
 
 def interactive_menu
@@ -34,6 +46,7 @@ end
 def print_menu
   puts "1. Input the students"
   puts "2. Show the students"
+  puts "3. Save the list to students.csv"
   puts "9. Exit" # 9 because we'll be adding more items
   # 2. read the input and save it into a variable
 end
@@ -50,6 +63,8 @@ def process(selection)
     @students = input_students
   when "2"
     show_students
+  when "3"
+    save_students
   when "9"
     exit # this will cause the program to terminate
   else
