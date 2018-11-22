@@ -47,7 +47,13 @@ def print(students)
 end
 
 def print_footer(students)
-  center_puts("Overall, we have #{students.count} great students")
+  if students.count == 1
+    puts "Overall, we have #{students.count} great student"
+  elsif students.count >= 2
+    puts "Overall, we have #{students.count} great students"
+  else
+    puts "There are no students at Villains Academy"
+  end
 end
 
 def center_puts(string)
