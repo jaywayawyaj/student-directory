@@ -33,14 +33,16 @@ def input_students
   students
 end
 
-def print_header
-  center_puts("The students of Villains Academy")
-  center_puts("-------------")
+def print_header(students)
+  if students.count == 1
+    center_puts("The students of Villains Academy")
+    center_puts("-------------")
+  end
 end
 
 def print(students)
-  students.each.with_index(1) do |student, x|
-    if student[:name].length < 12
+  if students.count > 0
+    students.each.with_index(1) do |student, x|
       center_puts("#{x} #{student[:name]} (#{student[:cohort]} cohort)")
     end
   end
@@ -48,11 +50,11 @@ end
 
 def print_footer(students)
   if students.count == 1
-    puts "Overall, we have #{students.count} great student"
+    center_puts("Overall, we have #{students.count} great student")
   elsif students.count >= 2
-    puts "Overall, we have #{students.count} great students"
+    center_puts("Overall, we have #{students.count} great students")
   else
-    puts "There are no students at Villains Academy"
+    center_puts("There are no students at Villains Academy")
   end
 end
 
@@ -62,6 +64,6 @@ end
 
 students = input_students
 #nothing happens until we call the methods
-print_header
+print_header(students)
 print(students)
 print_footer(students)
