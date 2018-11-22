@@ -8,18 +8,18 @@ def input_students
   puts "Enter the cohort you are in"
   cohort = gets.chomp
   # while the name is not empty, repeat this code
-  months = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"]
+  @months = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"]
   while !name.empty? do
     if cohort == ""
       cohort = "uknown"
     elsif cohort != ""
-      until months.include?(cohort.downcase) == true
+      until @months.include?(cohort.downcase) == true || cohort == "unknown"
         puts "Enter the cohort you are in"
         cohort = gets.chomp
       end
     end
     # add the student and cohort hash to the array
-    students << {name: name, cohort: cohort.to_sym}
+    students << {name: name, cohort: cohort}
     puts "Now we have #{students.count} students"
     # get another name from the user
     name = gets.chomp
@@ -33,11 +33,25 @@ def input_students
   students
 end
 
-def print_header(students)
-  if students.count == 1
-    center_puts("The students of Villains Academy")
-    center_puts("-------------")
+def get_students(students)
+  month = ""
+  until @months.include?(month)
+    puts "Choose the cohort you wish to view"
+    month = gets.chomp
   end
+  cohort_choice = []
+  students.each do |student|
+    if student[:cohort] == month
+      cohort_choice << student[:name]
+    end  
+  end
+  center_puts("The students in the #{month} cohort are:")
+  center_puts(cohort_choice.join(", "))
+end
+
+def print_header(students)
+  center_puts("The students of Villains Academy")
+  center_puts("-------------")
 end
 
 def print(students)
@@ -64,6 +78,8 @@ end
 
 students = input_students
 #nothing happens until we call the methods
+get_students(students)
+
 print_header(students)
 print(students)
 print_footer(students)
