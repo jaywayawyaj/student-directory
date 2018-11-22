@@ -7,16 +7,19 @@ def input_students
   name = gets.chomp
   puts "Enter the cohort you are in"
   cohort = gets.chomp
-  
-  puts "Enter the country you were born in"
-  country = gets.chomp
-  puts "Enter your height"
-  height = gets.chomp
   # while the name is not empty, repeat this code
-  
+  months = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"]
   while !name.empty? do
+    if cohort == ""
+      cohort = "uknown"
+    elsif cohort != ""
+      until months.include?(cohort.downcase) == true
+        puts "Enter the cohort you are in"
+        cohort = gets.chomp
+      end
+    end
     # add the student and cohort hash to the array
-    students << {name: name, cohort: cohort.capitalize, country: country, height: height}
+    students << {name: name, cohort: cohort.to_sym}
     puts "Now we have #{students.count} students"
     # get another name from the user
     name = gets.chomp
@@ -24,11 +27,6 @@ def input_students
     if !name.empty?
       puts "Enter the cohort you are in"
       cohort = gets.chomp
-      puts "Enter the country you were born in"
-      country = gets.chomp
-      puts "Enter your height"
-      height = gets.chomp
-  # while the name is not empty, repeat this code
     end
   end
   # return the array of students and cohorts
@@ -43,7 +41,7 @@ end
 def print(students)
   students.each.with_index(1) do |student, x|
     if student[:name].length < 12
-      center_puts("#{x} #{student[:name]} (#{student[:cohort]} cohort, #{student[:country]}, #{student[:height]})")
+      center_puts("#{x} #{student[:name]} (#{student[:cohort]} cohort)")
     end
   end
 end
