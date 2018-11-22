@@ -7,10 +7,16 @@ def input_students
   name = gets.chomp
   puts "Enter the cohort you are in"
   cohort = gets.chomp
+  
+  puts "Enter the country you were born in"
+  country = gets.chomp
+  puts "Enter your height"
+  height = gets.chomp
   # while the name is not empty, repeat this code
+  
   while !name.empty? do
     # add the student and cohort hash to the array
-    students << {name: name, cohort: cohort.capitalize.to_sym}
+    students << {name: name, cohort: cohort.capitalize, country: country, height: height}
     puts "Now we have #{students.count} students"
     # get another name from the user
     name = gets.chomp
@@ -18,6 +24,11 @@ def input_students
     if !name.empty?
       puts "Enter the cohort you are in"
       cohort = gets.chomp
+      puts "Enter the country you were born in"
+      country = gets.chomp
+      puts "Enter your height"
+      height = gets.chomp
+  # while the name is not empty, repeat this code
     end
   end
   # return the array of students and cohorts
@@ -30,10 +41,10 @@ def print_header
 end
 
 def print(students)
-  x = 0
-  until students.count == x
-    center_puts("#{students[x][:name]} (#{students[x][:cohort]} cohort)")
-    x += 1
+  students.each.with_index(1) do |student, x|
+    if student[:name].length < 12
+      center_puts("#{x} #{student[:name]} (#{student[:cohort]} cohort, #{student[:country]}, #{student[:height]})")
+    end
   end
 end
 
