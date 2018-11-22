@@ -30,10 +30,10 @@ def print_header
 end
 
 def print(students)
-  students.each.with_index(1) do |student, x|
-    if student[:name].length < 12
-      center_puts("#{x} #{student[:name]} (#{student[:cohort]} cohort)")
-    end
+  x = 0
+  until students.count == x
+    center_puts("#{students[x][:name]} (#{students[x][:cohort]} cohort)")
+    x += 1
   end
 end
 
