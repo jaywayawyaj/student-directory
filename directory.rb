@@ -1,26 +1,52 @@
+@students = []
+
+def print_menu
+  puts "1. Input the students"
+  puts "2. Show the students"
+  puts "3. Save the list to students.csv"
+  puts "4. Load students list from students.csv"
+  puts "9. Exit" # 9 because we'll be adding more items
+  # 2. read the input and save it into a variable
+end
+
+def interactive_menu
+  loop do
+    print_menu
+    process(gets.chomp)
+  end
+end
+
+def process(selection)
+  case selection
+  when "1"
+    @students = input_students
+  when "2"
+    show_students
+  when "3"
+  save_students
+  when "4"
+  load_students
+  when "9"
+    exit # this will cause the program to terminate
+  else
+    puts "I don't know what you meant, try again"
+  end
+end
+
 def input_students
   puts "Please enter the names of the students"
   puts "To finish, just hit return twice"
-  # create an empty array
-  students = []
   # get the first name
-  name = gets.delete("\n")
+  name = gets.chomp
   puts "Enter the cohort you are in"
   cohort = gets.chomp
   # while the name is not empty, repeat this code
-  @months = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"]
   while !name.empty? do
-    if cohort == ""
-      cohort = "uknown"
-    elsif cohort != ""
-      until @months.include?(cohort.downcase) == true || cohort == "unknown"
-        puts "Enter the cohort you are in"
-        cohort = gets.chomp
-      end
-    end
+    # add the student hash to the array
+    @students << {name: name, cohort: :november}
     # add the student and cohort hash to the array
-    students << {name: name, cohort: cohort}
-    puts "Now we have #{students.count} students"
+    @students << {name: name, cohort: cohort.capitalize.to_sym}
+    puts "Now we have #{@students.count} students"
     # get another name from the user
     name = gets.chomp
     # if a name is entered find out their cohort
@@ -29,57 +55,75 @@ def input_students
       cohort = gets.chomp
     end
   end
+  # return the array of students
   # return the array of students and cohorts
-  students
+  @students
 end
 
-def get_students(students)
-  month = ""
-  until @months.include?(month)
-    puts "Choose the cohort you wish to view"
-    month = gets.chomp
+def save_students
+  # open the file for writing
+  file = File.open("students.csv", "w")
+  # iterate over the array of students
+  @students.each do |student|
+    student_data = [student[:name], student[:cohort]]
+    csv_line = student_data.join(",")
+    file.puts csv_line
   end
-  cohort_choice = []
-  students.each do |student|
-    if student[:cohort] == month
-      cohort_choice << student[:name]
-    end  
-  end
-  center_puts("The students in the #{month} cohort are:")
-  center_puts(cohort_choice.join(", "))
+  file.close
 end
 
-def print_header(students)
-  center_puts("The students of Villains Academy")
-  center_puts("-------------")
+def load_students
+  file = File.open("students.csv", "r")
+  file.readlines.each do |line|
+  name, cohort = line.chomp.split(',')
+    @students << {name: name, cohort: cohort.to_sym}
+  end
+  file.close
+end
+
+def print_header
+  puts "The students of Villains Academy"
+  puts "-------------"
 end
 
 def print(students)
-  if students.count > 0
-    students.each.with_index(1) do |student, x|
-      center_puts("#{x} #{student[:name]} (#{student[:cohort]} cohort)")
-    end
+  students.each do |student|
+    puts "#{student[:name]} (#{student[:cohort]} cohort)"
   end
 end
 
 def print_footer(students)
-  if students.count == 1
-    center_puts("Overall, we have #{students.count} great student")
-  elsif students.count >= 2
-    center_puts("Overall, we have #{students.count} great students")
-  else
-    center_puts("There are no students at Villains Academy")
+  puts "Overall, we have #{students.count} great students"
+end
+
+def show_students
+  print_header
+  print_students_list
+  print_footer
+end
+
+def my_puts(string)
+  puts string.center(50)
+end
+def print_header
+  my_puts("The students of Villains Academy")
+  my_puts("-------------")
+end
+
+def print_students_list
+  @students.each.with_index(1) do |student, x|
+    my_puts("#{x}. #{student[:name]} (#{student[:cohort]} cohort)")
   end
 end
 
-def center_puts(string)
-  puts string.center(50)
+def print_footer
+  if @students.count == 1
+    my_puts("Overall, we have #{@students.count} great student")
+  elsif @students.count > 1
+    my_puts("Overall, we have #{@students.count} great students")
+  else
+    my_puts("There are no students at Villains Academy")
+  end
 end
 
-students = input_students
-#nothing happens until we call the methods
-get_students(students)
-
-print_header(students)
-print(students)
-print_footer(students)
+interactive_menu
