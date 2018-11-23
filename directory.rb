@@ -21,12 +21,12 @@ def process(selection)
     input_students
   when "2"
     show_students
-  when "9"
-    exit # this will cause the program to terminate
   when "3"
     save_students
   when "4"
     load_students
+  when "9"
+    exit # this will cause the program to terminate
   else
     puts "I don't know what you meant, try again"
   end
@@ -90,7 +90,11 @@ def add_students_to_list(*names)
 end
 
 def try_load_students
-  filename = ARGV.first# first argument from the command line
+  if ARGV.first == nil
+    filename = "students.csv"
+  else
+    filename = ARGV.first# first argument from the command line
+  end
   return if filename.nil? # get out of the method if it isn't given
   if File.exists?(filename) # if it exists
     load_students(filename)
