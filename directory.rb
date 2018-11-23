@@ -18,14 +18,19 @@ end
 def process(selection)
   case selection
   when "1"
+    puts "You have chosen to input students"
     input_students
   when "2"
+    puts "You have chosen to show the list"
     show_students
   when "3"
+    puts "You have chosen to save the list"
     save_students
   when "4"
+    puts "You have chosen to load the students list"
     load_students
   when "9"
+    puts "You have chosen to exit"
     exit # this will cause the program to terminate
   else
     puts "I don't know what you meant, try again"
@@ -65,9 +70,7 @@ def print_footer
 end
 
 def save_students
-  # open the file for writing
   file = File.open("students.csv", "w")
-  # iterate over the array of students
   @students.each do |student|
     student_data = [student[:name], student[:cohort]]
     csv_line = student_data.join(",")
@@ -93,15 +96,15 @@ def try_load_students
   if ARGV.first == nil
     filename = "students.csv"
   else
-    filename = ARGV.first# first argument from the command line
+    filename = ARGV.first
   end
-  return if filename.nil? # get out of the method if it isn't given
-  if File.exists?(filename) # if it exists
+  return if filename.nil? 
+  if File.exists?(filename)
     load_students(filename)
      puts "Loaded #{@students.count} from #{filename}"
-  else # if it doesn't exist
+  else 
     puts "Sorry, #{filename} doesn't exist."
-    exit # quit the program
+    exit
   end
 end
 
