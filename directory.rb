@@ -82,23 +82,23 @@ end
 
 def save_students
   choose_filename
-  @filename = File.open(@filename, "w")
-  @students.each do |student|
-    student_data = [student[:name], student[:cohort]]
-    csv_line = student_data.join(",")
-    @filename.puts csv_line
+  File.open(@filename, "w") do |detail|
+    @students.each do |student|
+      student_data = [student[:name], student[:cohort]]
+      csv_line = student_data.join(",")
+      detail.puts csv_line
+    end
   end
-  @filename.close
 end
 
 def load_students(*file)
   choose_filename
-  @filename = File.open(@filename, "r")
-  @filename.readlines.each do |line|
-  @name, @cohort = line.chomp.split(',')
-    add_students_to_list(@name, @cohort)
+  File.open(@filename, "r") do |details|
+    details.readlines.each do |line|
+    @name, @cohort = line.chomp.split(',')
+      add_students_to_list(@name, @cohort)
+    end
   end
-  @filename.close
 end
 
 def add_students_to_list(*names)
