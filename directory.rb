@@ -1,3 +1,4 @@
+require 'csv'
 @students = [] # an empty array accessible to all methods
 
 def print_menu
@@ -82,25 +83,45 @@ end
 
 def save_students
   choose_filename
-  File.open(@filename, "w") do |detail|
+  CSV.open(@filename, "wb") do |csv|
     @students.each do |student|
       student_data = [student[:name], student[:cohort]]
-      csv_line = student_data.join(",")
-      detail.puts csv_line
+      csv << student_data
     end
   end
 end
 
 def load_students(*file)
   choose_filename
-  File.open(@filename, "r") do |details|
-    details.readlines.each do |line|
-    @name, @cohort = line.chomp.split(',')
-      add_students_to_list(@name, @cohort)
-    end
+  CSV.foreach(@filename) do |row|
+    @name = row[0]
+    @cohort = row[1]
+    add_students_to_list(@name, @cohort)
   end
 end
 
+def add_students_to_list(*names)
+  @students << {name: @name, cohort: :november}
+end
+
+def try_load_students
+  if ARGV.first == nil
+    filename = "students.csv";
+  else
+    filename = ARGV.first
+  end
+  return if filename.nil?
+  if File.exists?(filename)
+    load_students(filename)
+     puts "Loaded #{@students.count} from #{filename}"
+  else 
+    puts "Sorry, #{filename} doesn't exist."
+    exit
+  end
+end
+
+try_load_students
+interactive_menu
 def add_students_to_list(*names)
   @students << {name: @name, cohort: :november}
 end
