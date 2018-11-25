@@ -83,6 +83,7 @@ end
 
 def save_students
   choose_filename
+  @students = []
   CSV.open(@filename, "wb") do |csv|
     @students.each do |student|
       student_data = [student[:name], student[:cohort]]
@@ -136,11 +137,11 @@ def try_load_students
   if File.exists?(filename)
     load_students(filename)
      puts "Loaded #{@students.count} from #{filename}"
-  else 
-    puts "Sorry, #{filename} doesn't exist."
-    exit
   end
 end
 
 try_load_students
 interactive_menu
+
+# exercise 3 - refactoring - can't see too many places to work on at the moment.
+# will return post CV writing if I have time!
